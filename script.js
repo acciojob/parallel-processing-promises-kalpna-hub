@@ -1,28 +1,26 @@
-//your JS code here. If required.
-const images = [
-  'https://picsum.photos/id/237/200/300',
-  'https://picsum.photos/id/238/200/300',
-  'https://picsum.photos/id/239/200/300',
-];
-function downloadImages() {
-	const promises = images.map(url => {
-		return new Promise((resolve, reject) => {
-			const img = new Image();
-			img.onload = () => resolve(img);
-			img.onerror = () => ('Failed to load  image' URL: $(url)' );
-				img.src = url;
-		});
+let images = [
+	'https://picsum.photos/id/237/200/300',
+	'https://picsum.photos/id/238/200/300',
+	'https://picsum.photos/id/239/200/300'
+]; //urls of images
+
+document.getElementById('download-images-button').addEventListener('click',(event)=>{
+
+	let promises = images.map((url)=>{ //creating promise for each of the image url
+		return new Promise((resolve,reject) => {
+			let img = new Image();//getting image 
+
+			img.onload = () => resolve(img); //upon laoding the image the promise is resolved
+			img.onerror = () => reject(`Failed to load image's URL: ${url}`); //if error give the statement
+			img.src = url; //save the image source
 	});
-	Promise.all(promises)
-	.then(images => {
-		const outputDiv = document.getElementById('output');
-		images.forEach(image => {
-			outputDiv.appendChild(image);
+	});
+
+	Promise.all(promises).then(images => {
+		images.forEach((image) => {
+			document.getElementById('output').appendChild(image); //append the image tag as and when the promise is resolved
 		});
-	})
-	.catch(error => {
+	}).catch(error => {
 		console.log(error);
 	});
-}
-document.getElementById('download-images-button').addEventListener
-('click' , downloadImages);
+});
